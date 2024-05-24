@@ -29,6 +29,10 @@
             const options = {
               title: "Heatmap basado en fechas",
               height: 350,
+              colorAxis: {
+                colors: ['#EEEEEE', '#CCCCCC', '#00FFFF'],
+                values: [0, 1, 2]
+              }
             };
 
             chart.draw(dataTable, options);
