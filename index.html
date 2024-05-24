@@ -29,9 +29,11 @@
             const options = {
               height: 350,
               colorAxis: {
-                colors: ['#EEEEEE', '#CCCCCC', '#00FFFF'],
-                values: [0, 1, 2]
-              }
+                colors: ['#CCCCCC', '#00FFFF'],
+                values: [1, 2]
+                
+              },
+              noDataColor: '#ffffff'
             };
 
             chart.draw(dataTable, options);
