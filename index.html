@@ -8,26 +8,31 @@
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
-        var dataTable = new google.visualization.DataTable();
-        dataTable.addColumn({ type: 'date', id: 'Date' });
-        dataTable.addColumn({ type: 'number', id: 'Value' });
-        dataTable.addRows([
-          [new Date(2023, 3, 13), 37032],
-          [new Date(2023, 3, 14), 38024],
-          [new Date(2023, 3, 15), 38024],
-          [new Date(2023, 3, 16), 38108],
-          [new Date(2023, 3, 17), 38229],
-          // Añade más filas aquí con fechas y valores
-        ]);
+        fetch('data.csv')
+          .then(response => response.text())
+          .then(csvText => {
+            const dataTable = new google.visualization.DataTable();
+            dataTable.addColumn({ type: 'date', id: 'Date' });
+            dataTable.addColumn({ type: 'number', id: 'Value' });
 
-        var chart = new google.visualization.Calendar(document.getElementById('calendar_basic'));
+            const rows = csvText.split('\n').slice(1);
+            const data = rows.map(row => {
+              const [dateStr, value] = row.split(',');
+              const dateParts = dateStr.split('-');
+              const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+              return [date, parseInt(value)];
+            });
+            dataTable.addRows(data);
 
-        var options = {
-          title: "Heatmap basado en fechas",
-          height: 350,
-        };
+            const chart = new google.visualization.Calendar(document.getElementById('calendar_basic'));
 
-        chart.draw(dataTable, options);
+            const options = {
+              title: "Heatmap basado en fechas",
+              height: 350,
+            };
+
+            chart.draw(dataTable, options);
+          });
       }
     </script>
   </head>
