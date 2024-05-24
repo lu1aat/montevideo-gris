@@ -28,12 +28,18 @@
 
             const options = {
               height: 450,
+              calendar: {
+                cellColor: {
+                  stroke: '#eeeeee',
+                  strokeOpacity: 0.5,
+                  strokeWidth: 1,
+                }
+              }
               colorAxis: {
                 colors: ['#aaaaaa', '#4a6583'],
                 values: [1, 2]
                 
               },
-              noDataColor: '#ffffff'
             };
 
             chart.draw(dataTable, options);
@@ -43,6 +49,7 @@
     <style>
       h1 {
         color: #666;
+        margin: 5%;
       }
     </style>
   </head>
