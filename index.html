@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Heatmap basado en fechas con Google Charts</title>
+    <title>montevideo-gris</title>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', { packages: ['calendar'] });
@@ -27,7 +27,6 @@
             const chart = new google.visualization.Calendar(document.getElementById('calendar_basic'));
 
             const options = {
-              title: "Heatmap basado en fechas",
               height: 350,
               colorAxis: {
                 colors: ['#EEEEEE', '#CCCCCC', '#00FFFF'],
@@ -41,6 +40,7 @@
     </script>
   </head>
   <body>
+    <h1>☁️ montevideo-gris 🌧️</h1>
     <div id="calendar_basic" style="width: 1000px; height: 350px;"></div>
   </body>
 </html>
