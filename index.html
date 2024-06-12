@@ -54,7 +54,17 @@
         color: #555;
         margin: 16px;
       }
+      #refsol {
+        background-color: #fffcea;
+      }
+      #refgris {
+        background-color: #bbbbbb;
+      }
+      #reflluvia {
+        background-color: #92adbe;
+      }
     </style>
+        
     
   </head>
   <body>
@@ -66,13 +76,15 @@
     <hr >
     <h3>ref</h3>
     <ul>
-      <li>0: sol (#fffcea)</li>
-      <li>1: gris (#bbbbbb)</li>
-      <li>2: lluvia (#92adbe)</li>
+      <li class="ref" id="refsol">0: sol (#fffcea)</li>
+      <li class="ref" id="refgris">1: gris (#bbbbbb)</li>
+      <li class="ref" id="reflluvia">2: lluvia (#92adbe)</li>
     </ul>
     <h3>datos</h3>
     <a href="https://raw.githubusercontent.com/lu1aat/montevideo-gris/main/data.csv">datos.csv</a>
     <h3>fuente</h3>
     <p>12V</p>
+
+    <script type="text/javascript" src="js/materialize.min.js"></script>
   </body>
 </html>
