@@ -54,9 +54,6 @@
         color: #555;
         margin: 16px;
       }
-      #wrapper {
-        margin: 16px;
-      }
       #refsol {
         background-color: #ffd700;
       }
@@ -66,23 +63,28 @@
       #reflluvia {
         background-color: #7a9eb1;
       }
+      .ref {
+        padding: 10px;
+      }
     </style>
   </head>
   <body>
     <div id="wrapper">
       <h1>☁️ montevideo-gris 🌧️</h1>
       <p>que tan gris, Montevideo?</p>  
-      <div id="calendar_basic" style="width: 560px; height: 220px;"></div>
-      <h3>ref</h3>
-      <ul>
-        <li class="ref" id="refsol">0: sol (#ffd700)</li>
-        <li class="ref" id="refgris">1: gris (#bbbbbb)</li>
-        <li class="ref" id="reflluvia">2: lluvia (#7a9eb1)</li>
-      </ul>
-      <h3>datos</h3>
-      <a href="https://raw.githubusercontent.com/lu1aat/montevideo-gris/main/data.csv">datos.csv</a>
-      <h3>fuente</h3>
-      <p>12V</p>
+      <div id="content">
+          <div id="calendar_basic" style="width: 560px; height: 180px;"></div>
+          <h3>ref</h3>
+          <ul>
+            <li class="ref" id="refsol">0: sol (#ffd700)</li>
+            <li class="ref" id="refgris">1: gris (#bbbbbb)</li>
+            <li class="ref" id="reflluvia">2: lluvia (#7a9eb1)</li>
+          </ul>
+          <h3>datos</h3>
+          <a href="https://raw.githubusercontent.com/lu1aat/montevideo-gris/main/data.csv">datos.csv</a>
+          <h3>fuente</h3>
+          <p>12V</p>
+      </div>  
   </div>
     <script type="text/javascript" src="js/materialize.min.js"></script>
   </body>
