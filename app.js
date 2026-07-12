@@ -37,6 +37,20 @@ function dateStrOf(date) {
   return date.toISOString().slice(0, 10);
 }
 
+function todayUTCStr() {
+  const now = new Date();
+  return dateStrOf(new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())));
+}
+
+// How many days ago (relative to the real, wall-clock today) a data date falls,
+// collapsed to the three labels the UI cares about.
+function recencyLabel(dateStr) {
+  const diffDays = Math.round((toUTCDate(todayUTCStr()) - toUTCDate(dateStr)) / 86400000);
+  if (diffDays === 0) return "Hoy";
+  if (diffDays === 1) return "Ayer";
+  return "Último";
+}
+
 function addDays(date, n) {
   const d = new Date(date);
   d.setUTCDate(d.getUTCDate() + n);
@@ -193,8 +207,8 @@ function hideTooltip() {
 
 // ---------- rendering ----------
 
-// Set in init(): the cell to highlight — today when it has data, otherwise the
-// most recent data day (mirrors the header chip's "Hoy" / "Último dato" split).
+// Set in init(): the most recent data day to highlight, labeled "Hoy" / "Ayer" /
+// "Último" depending on how far behind the real today it is (see recencyLabel).
 let todayMarker = null;
 
 function markToday(el, day, withFlag) {
@@ -717,12 +731,13 @@ function renderTodayChip(byDate) {
   const lastDateStr = [...byDate.keys()].sort().at(-1);
   const lastValue = byDate.get(lastDateStr);
   const lastDate = toUTCDate(lastDateStr);
-  const now = new Date();
-  const isToday = dateStrOf(lastDate) === dateStrOf(new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())));
+  const recency = recencyLabel(lastDateStr);
   const meta = STATUS[lastValue];
 
   const label = chip.querySelector(".label");
-  label.textContent = isToday ? "Hoy" : `Último dato · ${new Intl.DateTimeFormat("es-UY", { day: "numeric", month: "short", timeZone: "UTC" }).format(lastDate)}`;
+  label.textContent = recency === "Último"
+    ? `Último dato · ${new Intl.DateTimeFormat("es-UY", { day: "numeric", month: "short", timeZone: "UTC" }).format(lastDate)}`
+    : recency;
 
   const pill = chip.querySelector(".today-pill");
   pill.innerHTML = "";
@@ -745,11 +760,8 @@ async function init() {
   const years = [...groupByYear(byDate).keys()].sort().reverse();
   const globalMaxDate = toUTCDate([...byDate.keys()].sort().at(-1));
 
-  const now = new Date();
-  const todayStr = dateStrOf(new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())));
-  todayMarker = byDate.has(todayStr)
-    ? { dateStr: todayStr, label: "hoy" }
-    : { dateStr: dateStrOf(globalMaxDate), label: "Hoy" };
+  const lastDateStr = dateStrOf(globalMaxDate);
+  todayMarker = { dateStr: lastDateStr, label: recencyLabel(lastDateStr) };
 
   const main = document.getElementById("years");
   main.appendChild(renderRecentStrip(byDate, globalMaxDate));
