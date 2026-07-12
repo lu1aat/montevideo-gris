@@ -193,7 +193,23 @@ function hideTooltip() {
 
 // ---------- rendering ----------
 
-function renderCell(day) {
+// Set in init(): the cell to highlight — today when it has data, otherwise the
+// most recent data day (mirrors the header chip's "Hoy" / "Último dato" split).
+let todayMarker = null;
+
+function markToday(el, day, withFlag) {
+  if (!todayMarker || day.dateStr !== todayMarker.dateStr) return;
+  el.classList.add("is-today");
+  if (withFlag) {
+    const flag = document.createElement("span");
+    // Cells in the top two weekday rows get the flag below, clear of the month labels.
+    flag.className = "cell-flag" + (day.row <= 1 ? " cell-flag--below" : "");
+    flag.textContent = todayMarker.label;
+    el.appendChild(flag);
+  }
+}
+
+function renderCell(day, withFlag = false) {
   if (day.value === null) {
     const el = document.createElement("button");
     el.className = "cell";
@@ -206,6 +222,7 @@ function renderCell(day) {
     el.addEventListener("pointerleave", hideTooltip);
     el.addEventListener("focus", () => showTooltip(el, day));
     el.addEventListener("blur", hideTooltip);
+    markToday(el, day, withFlag);
     return el;
   }
 
@@ -221,6 +238,7 @@ function renderCell(day) {
   el.addEventListener("pointerleave", hideTooltip);
   el.addEventListener("focus", () => showTooltip(el, day));
   el.addEventListener("blur", hideTooltip);
+  markToday(el, day, withFlag);
   return el;
 }
 
@@ -597,9 +615,6 @@ function renderRecentStrip(byDate, globalMaxDate) {
   statRow.appendChild(renderStatTile("lluvia", stats.counts[2], recordedTotal, prevPctFor(2), "período anterior"));
   section.appendChild(statRow);
 
-  const now = new Date();
-  const todayStr = dateStrOf(new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())));
-
   const strip = document.createElement("div");
   strip.className = "strip-row";
   let lastMonth = null;
@@ -614,7 +629,13 @@ function renderRecentStrip(byDate, globalMaxDate) {
 
     const col = document.createElement("div");
     col.className = "strip-col";
-    if (day.dateStr === todayStr) col.classList.add("is-today");
+    if (todayMarker && day.dateStr === todayMarker.dateStr) {
+      col.classList.add("is-today");
+      const flag = document.createElement("span");
+      flag.className = "strip-flag";
+      flag.textContent = todayMarker.label;
+      col.appendChild(flag);
+    }
 
     const label = document.createElement("span");
     label.className = "strip-label";
@@ -677,7 +698,7 @@ function renderYear(year, byDate, globalMaxDate, prevStats) {
   const daysGrid = document.createElement("div");
   daysGrid.className = "days-grid";
   for (const day of days) {
-    daysGrid.appendChild(renderCell(day));
+    daysGrid.appendChild(renderCell(day, true));
   }
   gridCol.appendChild(daysGrid);
   heatmap.appendChild(gridCol);
@@ -723,6 +744,12 @@ async function init() {
 
   const years = [...groupByYear(byDate).keys()].sort().reverse();
   const globalMaxDate = toUTCDate([...byDate.keys()].sort().at(-1));
+
+  const now = new Date();
+  const todayStr = dateStrOf(new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())));
+  todayMarker = byDate.has(todayStr)
+    ? { dateStr: todayStr, label: "hoy" }
+    : { dateStr: dateStrOf(globalMaxDate), label: "Hoy" };
 
   const main = document.getElementById("years");
   main.appendChild(renderRecentStrip(byDate, globalMaxDate));
