@@ -544,9 +544,9 @@ h1 em {
 
 .cell-flag {
   position: absolute;
-  left: 50%;
-  bottom: calc(100% + 5px);
-  transform: translateX(-50%);
+  top: 50%;
+  left: calc(100% + 5px);
+  transform: translateY(-50%);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -562,11 +562,6 @@ h1 em {
   z-index: 3;
 }
 
-.cell-flag--below {
-  bottom: auto;
-  top: calc(100% + 5px);
-}
-
 .cell:hover,
 .cell:focus-visible {
   transform: scale(1.35);
@@ -579,7 +574,7 @@ h1 em {
 /* keep the flag at its own size while the cell scales up under it */
 .cell:hover .cell-flag,
 .cell:focus-visible .cell-flag {
-  transform: translateX(-50%) scale(0.74);
+  transform: translateY(-50%) scale(0.74);
 }
 
 .cell:disabled { cursor: default; }

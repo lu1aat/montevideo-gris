@@ -216,8 +216,7 @@ function markToday(el, day, withFlag) {
   el.classList.add("is-today");
   if (withFlag) {
     const flag = document.createElement("span");
-    // Cells in the top two weekday rows get the flag below, clear of the month labels.
-    flag.className = "cell-flag" + (day.row <= 1 ? " cell-flag--below" : "");
+    flag.className = "cell-flag";
     flag.textContent = todayMarker.label;
     el.appendChild(flag);
   }
