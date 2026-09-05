@@ -57,8 +57,6 @@ function addDays(date, n) {
   return d;
 }
 
-const monthFmt = new Intl.DateTimeFormat("es-UY", { month: "short", timeZone: "UTC" });
-
 function stripDayLabel(date) {
   return String(date.getUTCDate());
 }
@@ -70,8 +68,10 @@ const tooltipDateFmt = new Intl.DateTimeFormat("es-UY", {
   timeZone: "UTC",
 });
 
+const MONTH_ABBREV = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+
 function monthAbbrev(date) {
-  return monthFmt.format(date).replace(/\.$/, "");
+  return MONTH_ABBREV[date.getUTCMonth()];
 }
 
 function groupByYear(byDate) {
